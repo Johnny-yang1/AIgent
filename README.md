@@ -7,7 +7,7 @@
 
 1.  **下载代码:**  `git clone [YOUR_REPO_URL]`
 2.  **安装依赖:** `pip install streamlit requests PyMuPDF docx2txt`
-3.  **填入 API Key:**  在 `app.py` 运行时，侧边栏填入 API Key (要先去 AI 服务商那里申请哦).
+3.  **填入 API Key:**  在 `app.py` 运行时，侧边栏填入 API Key (硅基流动).
 4.  **运行!** `streamlit run app.py`
 
 ## ✨ 怎么用？
@@ -32,8 +32,5 @@
 
 有 bug 或者好点子？ 欢迎提交 issue 和 PR！
 
-## 📜 许可证
-
-[可选:  写上许可证，比如 MIT License]
 
 **开始你的 AI 探索之旅吧!** 🚀
