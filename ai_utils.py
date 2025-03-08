@@ -204,6 +204,7 @@ def optimize_user_input(user_prompt):
 6. 必须确保是LLM可以制作的任务
 7. 此AI无法上网，请确保你的指令准确无误
 8. 理解用户想要真是的表达信息
+9. 不要加自己的东西
 
 请直接输出优化后的指令，不要添加解释或其他内容。"""
     
@@ -217,7 +218,7 @@ def optimize_user_input(user_prompt):
     # 构建API请求参数
     # 设置模型和各种生成参数
     payload = {
-        "model": "Pro/deepseek-ai/DeepSeek-R1",  # 使用DeepSeek-R1模型进行指令优化
+        "model": "Qwen/QwQ-32B",  # 使用Qwen/QwQ-32B模型进行指令优化
         "messages": messages,  # 包含系统提示和用户指令的消息列表
         "stream": False,  # 不使用流式输出
         "max_tokens": 4096,  # 设置回答的最大长度

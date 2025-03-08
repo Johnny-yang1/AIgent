@@ -36,11 +36,37 @@ def extract_text_from_pdf(uploaded_file):
         with open("temp.pdf", "wb") as f:
             f.write(uploaded_file.getvalue())
         
-        # 使用PyMuPDF提取文本
+        # 尝试使用PyMuPDF直接提取文本
         pdf_document = fitz.open("temp.pdf")
+        text = ""
         for page_num in range(pdf_document.page_count):
             page = pdf_document.load_page(page_num)
-            text += page.get_text()
+            page_text = page.get_text()
+            
+            # 如果页面文本为空或几乎为空，尝试使用OCR
+            if len(page_text.strip()) < 50:  # 假设少于50个字符的页面可能是扫描件
+                try:
+                    # 导入OCR所需库
+                    import pytesseract
+                    from PIL import Image
+                    
+                    # 将PDF页面渲染为图片
+                    pix = page.get_pixmap()
+                    img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+                    
+                    # 使用pytesseract进行OCR识别
+                    ocr_text = pytesseract.image_to_string(img, lang='chi_sim')  # 'chi_sim'表示简体中文
+                    text += ocr_text + "\n\n"
+                    st.info(f"第{page_num+1}页使用OCR识别")
+                except ImportError:
+                    st.warning("OCR功能需要安装pytesseract和Pillow库。请使用'pip install pytesseract pillow'安装。")
+                    text += page_text
+                except Exception as ocr_error:
+                    st.warning(f"OCR处理出错: {ocr_error}，使用常规文本提取")
+                    text += page_text
+            else:
+                text += page_text
+        
         pdf_document.close()
         
         # 删除临时文件
@@ -187,10 +213,16 @@ if submitted:
                     st.session_state.prompts = prompts
                     st.session_state.current_step = 1
                     st.session_state.results = []
-                    # 将PDF或Word文本作为初始chain_input
+                    # 将PDF或Word文本添加到用户的prompt中，确保每个AI都能获取到完整内容
                     if st.session_state.pdf_text:
+                        # 将PDF文本添加到优化后的prompt中，而不是作为chain_input
+                        optimized_prompt = f"以下是上传的PDF文档内容：\n\n{st.session_state.pdf_text}\n\n基于以上内容，请回答：\n{optimized_prompt}"
+                        # 同时保留在chain_input中，以便向后兼容
                         st.session_state.chain_input = st.session_state.pdf_text
                     elif st.session_state.docx_text:
+                        # 将Word文本添加到优化后的prompt中
+                        optimized_prompt = f"以下是上传的Word文档内容：\n\n{st.session_state.docx_text}\n\n基于以上内容，请回答：\n{optimized_prompt}"
+                        # 同时保留在chain_input中
                         st.session_state.chain_input = st.session_state.docx_text
                 else:
                     st.error("无法获取有效的API响应，请检查API密钥和网络连接后重试")
@@ -223,6 +255,11 @@ if st.session_state.prompts:
             if st.session_state.current_step > 1 and len(st.session_state.results) > 0:
                 # 收集所有之前的AI输出
                 all_previous_outputs = st.session_state.results.copy()
+                # 确保每个步骤都能获取到PDF或Word文档内容
+                if st.session_state.pdf_text:
+                    current_prompt = f"以下是上传的PDF文档内容：\n\n{st.session_state.pdf_text}\n\n基于以上内容和之前AI的输出，请继续：\n{current_prompt}"
+                elif st.session_state.docx_text:
+                    current_prompt = f"以下是上传的Word文档内容：\n\n{st.session_state.docx_text}\n\n基于以上内容和之前AI的输出，请继续：\n{current_prompt}"
             elif st.session_state.current_step == 1 and st.session_state.chain_input:
                 # 如果是第一个prompt且有初始输入，使用初始输入
                 chain_input = st.session_state.chain_input
