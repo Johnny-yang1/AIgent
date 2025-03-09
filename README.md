@@ -36,5 +36,5 @@
 **开始你的 AI 探索之旅吧!** 🚀
 
 
-Demo+视频：https://www.bilibili.com/video/BV1KGRWY!
+[Demo+视频：https://www.bilibili.com/video/BV1KGRWY!](https://www.bilibili.com/video/BV1KGRWYsEmw)
 ![screencapture-localhost-8501-2025-03-08-20_11_15](https://github.com/user-attachments/assets/2ab68e8a-f13a-4d25-b7c4-58946268db3c)
