@@ -1,4 +1,4 @@
-![screencapture-localhost-8501-2025-03-08-20_11_15](https://github.com/user-attachments/assets/2ab68e8a-f13a-4d25-b7c4-58946268db3c)# 🤖 怀远の超级AGENT - 我看了Manus之后让AI做的
+# 🤖 怀远の超级AGENT - 我看了Manus之后让AI做的
 
 这个几乎全部是AI写的，我尝试复制了Manus和一些Agent的逻辑连，做出来了这样的效果。
 这个readme也是AI写的，反正AI牛逼，学编程都快成伪命题了
@@ -37,5 +37,4 @@
 
 
 Demo+视频：https://www.bilibili.com/video/BV1KGRWY!
-[Uploading screencapture-localhost-8501-2025-03-08-20_11_15.png…]()
-sEmw
+![screencapture-localhost-8501-2025-03-08-20_11_15](https://github.com/user-attachments/assets/2ab68e8a-f13a-4d25-b7c4-58946268db3c)
